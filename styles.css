@@ -1,10 +1,16 @@
-body {
+body, .dark-mode {
     transition: background 0.6s;
     min-height: 100vh;
     font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-    background: linear-gradient(135deg, #b5179e 0%, #4361ee 100%);
 }
-
+body {
+    background: linear-gradient(135deg, #b5179e 0%, #4361ee 100%);
+    color: #222;
+}
+.dark-mode {
+    background: #181926 !important;
+    color: #e0e0e0 !important;
+}
 .glass-card {
     margin: 30px 0 0 0;
     padding: 2rem;
@@ -16,13 +22,15 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.24);
     transition: background 0.5s, color 0.5s;
 }
-
+.dark-mode .glass-card {
+    background: rgba(30,30,40,0.7) !important;
+    color: #fff !important;
+}
 h2, h3, h4, h5 {
     margin-top: 0;
     font-weight: 700;
     letter-spacing: 1px;
 }
-
 @media (max-width: 900px) {
     .glass-card {
         padding: 1rem;
