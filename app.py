@@ -10,7 +10,7 @@ def load_css():
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 def main():
-    st.set_page_config(page_title="GenZ Finance Buddy", layout="wide", page_icon="💸")
+    st.set_page_config(page_title="FinWise", layout="wide", page_icon="💸")
     load_css()
 
     st.sidebar.image("assets/logo.png", width=150)
