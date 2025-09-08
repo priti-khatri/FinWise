@@ -1,21 +1,28 @@
 import streamlit as st
-import openai
-import utils
+from openai import OpenAI
+
+client = OpenAI(api_key=st.secrets["openai_api_key"])
 
 def recommender_interface():
-    st.title("🎯 Personalized Finance Recommender")
+    st.subheader("📈 Get Personalized Finance Advice")
 
-    openai.api_key = st.secrets["openai_api_key"]
+    with st.container():
+        st.markdown('<div class="card-container">', unsafe_allow_html=True)
 
-    income = st.slider("Your monthly income (USD)", 0, 20000, 3000)
-    knowledge_level = st.selectbox("Your finance knowledge level", ["Beginner", "Intermediate", "Advanced"])
+        income = st.slider("What's your monthly income? 💸", 1000, 200000, 30000, step=1000)
+        experience = st.selectbox("How confident are you in managing money?", ["Beginner", "Intermediate", "Pro"])
+        
+        if st.button("Recommend Strategy"):
+            prompt = f"Suggest a financial strategy for someone with a monthly income of {income} INR and experience level: {experience}."
+            with st.spinner("Finding the best plan for you... 🔍"):
+                try:
+                    res = client.responses.create(
+                        model="gpt-5-nano",
+                        input=prompt,
+                        store=False
+                    )
+                    st.markdown(f'<div class="card">{res.output_text}</div>', unsafe_allow_html=True)
+                except Exception as e:
+                    st.error(f"Error: {e}")
 
-    prompt = f"""
-    Recommend next best steps for a GenZ user with a monthly income of ${income} and finance knowledge level: {knowledge_level}.
-    Provide simple, actionable advice on investments, savings, and learning.
-    """
-
-    if st.button("Get Recommendations"):
-        with st.spinner("Fetching personalized recommendations..."):
-            response = utils.get_openai_response([{"role": "user", "content": prompt}])
-        st.markdown(response)
+        st.markdown('</div>', unsafe_allow_html=True)
