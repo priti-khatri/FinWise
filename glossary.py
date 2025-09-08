@@ -1,23 +1,45 @@
 import streamlit as st
 from lottie_util import display_lottie
 
-def glossary_interface():
+def load_css():
+    with open("styles.css") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+st.set_page_config(page_title="FinWise Glossary", layout="wide", page_icon="📖")
+load_css()
+
+if "dark" not in st.session_state:
+    st.session_state["dark"] = False
+
+if st.button("Toggle Dark Mode"):
+    st.session_state["dark"] = not st.session_state["dark"]
+
+if st.session_state["dark"]:
     st.markdown(
-        """
-        <div class="glass-card">
-            <h2 style='color:#f72585;font-size:2.2em;letter-spacing:1px;'>
-                📚 Explore Finance Terms
-            </h2>
-            <p style='font-size:1.16em;'>Swipe through financial lingo and level up your money game! 🤑</p>
-        </div>
-        """, unsafe_allow_html=True
+        "<style>body { background: #181926 !important; color: #e0e0e0 !important; } "
+        ".glass-card { background: rgba(30,30,40,0.7) !important; color: #fff !important; } </style>",
+        unsafe_allow_html=True
     )
-    display_lottie("https://assets3.lottiefiles.com/packages/lf20_mf2zqwwb.json", height=120, key="glossary_lottie")
-    terms = {
-        "APR": "Annual Percentage Rate, the yearly interest.",
-        "ETF": "Exchange Traded Fund, a basket of assets.",
-        "Roth IRA": "A retirement savings account with tax perks.",
-        "Diversification": "Don't put all your eggs in one basket!",
-    }
-    choice = st.selectbox("Pick a term to learn more:", list(terms.keys()))
-    st.info(terms[choice])
+else:
+    st.markdown(
+        "<style>body { background: #f1f3f6 !important; color: #222 !important; } "
+        ".glass-card { background: rgba(255,255,255,0.6) !important; color: #222 !important; } </style>",
+        unsafe_allow_html=True
+    )
+
+st.title("FinWise Glossary")
+
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.header("Financial Term")
+    display_lottie("https://assets6.lottiefiles.com/packages/lf20_2znxv3dx.json", height=200, key="glossary-lottie")
+    st.write("Learn the meaning of financial terms in simple language.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with col2:
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.header("Definition")
+    # (Placeholder for definition display)
+    st.write("Select a term to see its definition here.")
+    st.markdown('</div>', unsafe_allow_html=True)

@@ -1,24 +1,45 @@
 import streamlit as st
 from lottie_util import display_lottie
 
-def recommender_interface():
+def load_css():
+    with open("styles.css") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+st.set_page_config(page_title="FinWise Recommender", layout="wide", page_icon="🤖")
+load_css()
+
+if "dark" not in st.session_state:
+    st.session_state["dark"] = False
+
+if st.button("Toggle Dark Mode"):
+    st.session_state["dark"] = not st.session_state["dark"]
+
+if st.session_state["dark"]:
     st.markdown(
-        """
-        <div class="glass-card">
-            <h2 style='color:#b5179e;font-size:2.2em;letter-spacing:1px;'>
-                ✨ Get Personalized Recommendations
-            </h2>
-            <p style='font-size:1.16em;'>Let us recommend the best financial moves for you! 🌟</p>
-        </div>
-        """, unsafe_allow_html=True
+        "<style>body { background: #181926 !important; color: #e0e0e0 !important; } "
+        ".glass-card { background: rgba(30,30,40,0.7) !important; color: #fff !important; } </style>",
+        unsafe_allow_html=True
     )
-    display_lottie("https://assets1.lottiefiles.com/packages/lf20_tfb3estd.json", height=130, key="rec_lottie")
-    age = st.slider("How old are you?", 16, 60, 22)
-    risk = st.select_slider("Choose your risk level:", ["Low", "Medium", "High"], value="Medium")
-    if st.button("Get Recommendation"):
-        if age < 25 and risk == "High":
-            st.success("Consider aggressive growth ETFs and crypto (but DYOR)! 🚀")
-        elif risk == "Low":
-            st.info("Index funds and high-yield savings are your friends! 💰")
-        else:
-            st.success("Mix it up! Diversify between stocks and ETFs.")
+else:
+    st.markdown(
+        "<style>body { background: #f1f3f6 !important; color: #222 !important; } "
+        ".glass-card { background: rgba(255,255,255,0.6) !important; color: #222 !important; } </style>",
+        unsafe_allow_html=True
+    )
+
+st.title("FinWise Recommender")
+
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.header("Get a Recommendation")
+    display_lottie("https://assets5.lottiefiles.com/packages/lf20_w51pcehl.json", height=200, key="recommender-lottie")
+    st.write("Receive personalized financial advice and product recommendations.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with col2:
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.header("Why We Recommend")
+    # (Placeholder for explanations)
+    st.write("Understand why this recommendation is suited for you.")
+    st.markdown('</div>', unsafe_allow_html=True)
