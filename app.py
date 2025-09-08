@@ -13,7 +13,7 @@ def main():
     st.set_page_config(page_title="FinWise", layout="wide", page_icon="💸")
     load_css()
 
-    st.sidebar.image("assets/logo.png", width=150)
+    st.sidebar.image("assets/logo.jpg", width=150)
     st.sidebar.title("📚 Navigation")
     page = st.sidebar.radio(
         "Choose a page:",
