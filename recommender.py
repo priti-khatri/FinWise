@@ -1,33 +1,25 @@
-# recommender.py
-
 import streamlit as st
-import json
-import os
 
-def load_recommendations():
-    file_path = os.path.join("data", "recommendations.json")
-    with open(file_path, "r") as f:
-        return json.load(f)
+def recommender_interface():
+    st.markdown("<div style='background: rgba(0,0,0,0.5); border-radius: 15px; padding: 2rem;'>", unsafe_allow_html=True)
+    st.title("🎯 Personalized Finance Recommender")
 
-def recommendation_interface():
-    st.subheader("🎯 Personalized Finance & Learning Path")
+    income = st.number_input("Enter your monthly income (₹)", min_value=0, step=1000)
+    knowledge = st.selectbox("Your finance knowledge level:", ["Beginner", "Intermediate", "Advanced"])
 
-    recommendations = load_recommendations()
-
-    income = st.selectbox(
-        "What is your monthly income range? 💵",
-        ["Low Income", "Medium Income", "High Income"]
-    )
-
-    knowledge = st.selectbox(
-        "How would you rate your finance knowledge? 📚",
-        ["Beginner", "Intermediate", "Advanced"]
-    )
-
-    if st.button("Get Recommendations"):
-        advice = recommendations.get(income, {}).get(knowledge, None)
-        if advice:
-            st.markdown(f"### Here's your personalized advice:")
-            st.success(advice)
+    if st.button("Get Recommendation"):
+        if income == 0:
+            st.error("Please enter a valid income greater than 0.")
         else:
-            st.error("Sorry, no recommendations found for this selection. Try different options.")
+            recommendation = ""
+
+            if knowledge == "Beginner":
+                recommendation = "Start with basic savings and budgeting apps, and learn about mutual funds."
+            elif knowledge == "Intermediate":
+                recommendation = "Explore SIP investments, ETFs, and diversify your portfolio."
+            else:
+                recommendation = "Consider advanced stock market strategies and derivatives trading after research."
+
+            st.success(f"Based on your income ₹{income} and knowledge level '{knowledge}', here’s a recommendation: {recommendation}")
+
+    st.markdown("</div>", unsafe_allow_html=True)
