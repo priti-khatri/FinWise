@@ -1,6 +1,4 @@
 streamlit
-openai
-pandas
+streamlit-lottie
 plotly
-matplotlib
-numpy
+requests
