@@ -1,31 +1,27 @@
-# glossary.py
-
 import streamlit as st
-import json
-import os
-
-def load_terms():
-    file_path = os.path.join("data", "finance_terms.json")
-    with open(file_path, "r") as f:
-        return json.load(f)
 
 def glossary_interface():
-    st.subheader("📖 Financial Glossary")
-    st.markdown("Explore financial terms in a simple, Gen Z–friendly way. Use the search box to find what you need.")
+    st.markdown("<div style='background: rgba(0,0,0,0.5); border-radius: 15px; padding: 2rem;'>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color:#FFD700;'>📖 Finance Glossary</h2>", unsafe_allow_html=True)
 
-    search = st.text_input("🔍 Search for a term")
+    glossary_data = {
+        "Equity": "Ownership in a company represented by shares.",
+        "Bond": "A fixed income instrument representing a loan.",
+        "ETF": "Exchange-Traded Fund, a basket of securities traded like stocks.",
+        "Dividend": "A distribution of profits to shareholders.",
+        "IPO": "Initial Public Offering, the first sale of stock by a private company to the public.",
+        "Liquidity": "How easily an asset can be converted into cash.",
+        "Bull Market": "A market condition where prices are rising or expected to rise.",
+        "Bear Market": "A market condition where prices are falling or expected to fall."
+    }
 
-    terms = load_terms()
+    term = st.text_input("Search a term:", placeholder="E.g. Equity, Bond, IPO")
 
-    if search:
-        results = {k: v for k, v in terms.items() if search.lower() in k.lower()}
-        if results:
-            for term, definition in results.items():
-                with st.expander(f"📘 {term}"):
-                    st.markdown(definition)
+    if term:
+        result = glossary_data.get(term.strip().title())
+        if result:
+            st.markdown(f"<div style='color:#00CFFF; font-size:18px;'><b>{term.title()}:</b> {result}</div>", unsafe_allow_html=True)
         else:
-            st.warning("No matching term found.")
-    else:
-        for term, definition in terms.items():
-            with st.expander(f"📘 {term}"):
-                st.markdown(definition)
+            st.warning("Term not found. Try another!")
+
+    st.markdown("</div>", unsafe_allow_html=True)
