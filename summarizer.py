@@ -1,19 +1,28 @@
 import streamlit as st
-import openai
-import utils
+from openai import OpenAI
+
+client = OpenAI(api_key=st.secrets["openai_api_key"])
 
 def summarizer_interface():
-    st.title("📝 Finance Article & Concept Summarizer")
+    st.subheader("📝 Summarize Financial Text")
 
-    openai.api_key = st.secrets["openai_api_key"]
+    st.markdown('<div class="card-container">', unsafe_allow_html=True)
 
-    text = st.text_area("Paste finance article or concept text here to summarize:")
+    article = st.text_area("Paste any finance article, report, or explanation you'd like summarized:", height=200)
 
     if st.button("Summarize"):
-        if text.strip():
-            prompt = f"Summarize this finance content for a GenZ audience: {text}"
-            with st.spinner("Summarizing..."):
-                summary = utils.get_openai_response([{"role": "user", "content": prompt}])
-            st.markdown(summary)
+        if article.strip():
+            with st.spinner("Reading and summarizing your content... 📖"):
+                try:
+                    response = client.responses.create(
+                        model="gpt-5-nano",
+                        input=f"Summarize this in simple points: {article}",
+                        store=False
+                    )
+                    st.markdown(f'<div class="card"><h4>Summary</h4><p>{response.output_text}</p></div>', unsafe_allow_html=True)
+                except Exception as e:
+                    st.error(f"Couldn't summarize due to: {e}")
         else:
             st.warning("Please paste some text to summarize.")
+
+    st.markdown('</div>', unsafe_allow_html=True)
