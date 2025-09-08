@@ -1,0 +1,17 @@
+{
+  "Low Income": {
+    "Beginner": "Start with budgeting basics and saving tips. Apps like Mint or YNAB can help! Focus on building an emergency fund first. 💰",
+    "Intermediate": "Explore high-yield savings accounts and basic investing with ETFs. Avoid debt and learn about credit scores. 📈",
+    "Advanced": "Consider side hustles and learning about tax benefits. Start small investments and retirement accounts (like a Roth IRA). 🚀"
+  },
+  "Medium Income": {
+    "Beginner": "Create a detailed budget and start investing in diversified index funds. Understand taxes and employer 401(k). 💸",
+    "Intermediate": "Dive deeper into stock market basics, bonds, and inflation. Consider consulting a financial advisor. 📊",
+    "Advanced": "Look into real estate investing, tax-efficient accounts, and portfolio rebalancing. Start planning for early retirement. 🏡"
+  },
+  "High Income": {
+    "Beginner": "Get a financial plan and set clear goals. Start investing in stocks and bonds while managing risk. 📉",
+    "Intermediate": "Explore private equity, real estate, and tax optimization strategies. Diversify globally. 🌍",
+    "Advanced": "Consider estate planning, trusts, philanthropy, and advanced portfolio management techniques. 💼"
+  }
+}
