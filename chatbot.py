@@ -1,54 +1,27 @@
 import streamlit as st
 import openai
+import utils
 
 def chatbot_interface():
-    st.title("💬 FinWise AI Chatbot")
+    st.title("🤖 Finance Buddy Chatbot")
 
-    st.markdown("""
-        <style>
-        .chat-container {
-            background-color: #f3f4f6;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        .user-msg {
-            background-color: #e0f7fa;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 5px;
-        }
-        .bot-msg {
-            background-color: #ede7f6;
-            padding: 10px;
-            border-radius: 10px;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+    openai.api_key = st.secrets["openai_api_key"]
 
-    openai.api_key = st.secrets["OPENAI_API_KEY"]
+    if "messages" not in st.session_state:
+        st.session_state.messages = [{"role": "system", "content": "You are a helpful finance assistant for GenZ."}]
 
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
+    with st.form(key="chat_form", clear_on_submit=True):
+        user_input = st.text_input("Ask me anything about finance, stocks, investment banking...")
+        submit = st.form_submit_button("Send")
 
-    user_input = st.text_input("Ask FinWise something about finance, budgeting, or investments:")
+    if submit and user_input:
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        with st.spinner("Generating response..."):
+            response = utils.get_openai_response(st.session_state.messages)
+        st.session_state.messages.append({"role": "assistant", "content": response})
 
-    if st.button("Send"):
-        if user_input:
-            st.session_state.chat_history.append({"role": "user", "content": user_input})
-
-            try:
-                response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=st.session_state.chat_history
-                )
-                reply = response.choices[0].message.content
-                st.session_state.chat_history.append({"role": "assistant", "content": reply})
-            except Exception as e:
-                st.error("Error fetching response from AI.")
-
-    for msg in st.session_state.chat_history:
+    for msg in st.session_state.messages:
         if msg["role"] == "user":
-            st.markdown(f"<div class='user-msg'><strong>You:</strong> {msg['content']}</div>", unsafe_allow_html=True)
-        else:
-            st.markdown(f"<div class='bot-msg'><strong>FinWise:</strong> {msg['content']}</div>", unsafe_allow_html=True)
+            st.markdown(f"<p style='color:#7C4DFF;'><b>You:</b> {msg['content']}</p>", unsafe_allow_html=True)
+        elif msg["role"] == "assistant":
+            st.markdown(f"<p style='color:#03DAC5;'><b>Finance Buddy:</b> {msg['content']}</p>", unsafe_allow_html=True)
