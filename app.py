@@ -1,53 +1,44 @@
-import streamlit as st
-from lottie_util import display_lottie
-from chatbot import chatbot_interface
-from glossary import glossary_interface
-from recommender import recommender_interface
-from explainer import explainer_interface
-from investment_tips import investment_tips_interface
-from summarizer import summarizer_interface
-from scenario import scenario_interface
+iimport streamlit as st
 
 def load_css():
     with open("styles.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-def landing_page():
+# Page config and CSS
+st.set_page_config(page_title="FinWise Demo", layout="wide", page_icon="💸")
+load_css()
+
+# Dark mode toggle in session_state
+if "dark" not in st.session_state:
+    st.session_state["dark"] = False
+
+# Toggle button
+if st.button("Toggle Dark Mode"):
+    st.session_state["dark"] = not st.session_state["dark"]
+
+# Inject dark/light mode CSS
+if st.session_state["dark"]:
+    st.markdown("<style>body { background: #181926 !important; color: #e0e0e0 !important; } .glass-card { background: rgba(30,30,40,0.7) !important; color: #fff !important; } </style>", unsafe_allow_html=True)
+else:
+    st.markdown("<style>body { background: #f1f3f6 !important; color: #222 !important; } .glass-card { background: rgba(255,255,255,0.6) !important; color: #222 !important; } </style>", unsafe_allow_html=True)
+
+# Side-by-side layout
+col1, col2 = st.columns(2)
+with col1:
     st.markdown("""
-    <div class='hero-header'>
-      <div class='hero-title'>FinWise 💸</div>
-      <div class='hero-sub'>
-        Elevate your financial journey.<br>
-        Modern tools. Instant advice.<br>
-        <span style='color:#f806cc;font-weight:600;'>Built for GenZ. </span>
-      </div>
+    <div class="glass-card">
+        <h2>Card 1</h2>
+        <p>This is the left card. Add a Lottie animation or image here.</p>
+        <img src="https://assets10.lottiefiles.com/packages/lf20_tutvdkg0.json" width="100%">
     </div>
     """, unsafe_allow_html=True)
-    display_lottie("https://assets2.lottiefiles.com/packages/lf20_49rdyysj.json", height=300, key="hero_lottie")
+with col2:
+    st.markdown("""
+    <div class="glass-card">
+        <h2>Card 2</h2>
+        <p>This is the right card. Add a Lottie animation or image here.</p>
+        <img src="https://assets2.lottiefiles.com/private_files/lf30_oqpbtola.json" width="100%">
+    </div>
+    """, unsafe_allow_html=True)
 
-def main():
-    st.set_page_config(page_title="FinWise", layout="wide", page_icon="💸")
-    load_css()
-    if "dark" not in st.session_state:
-        st.session_state.dark = False
-    st.sidebar.title("🌈 FinWise")
-    if st.sidebar.button("🌙 Toggle Dark Mode"):
-        st.session_state.dark = not st.session_state.dark
-    body_class = "dark-mode" if st.session_state.dark else ""
-    st.markdown(f'<div class="{body_class}">', unsafe_allow_html=True)
-    pages = {
-        "🏠 Home": landing_page,
-        "💬 Chatbot": chatbot_interface,
-        "📚 Glossary": glossary_interface,
-        "✨ Recommender": recommender_interface,
-        "🧠 Explain Concept": explainer_interface,
-        "💡 Investment Tips": investment_tips_interface,
-        "📝 Summarize": summarizer_interface,
-        "📊 Scenario": scenario_interface,
-    }
-    choice = st.sidebar.radio("🚀 Navigation", list(pages.keys()))
-    pages[choice]()
-    st.markdown("</div>", unsafe_allow_html=True)
-
-if __name__ == "__main__":
-    main()
+st.write("This is a minimal test. If you see two glassy cards side by side and the background/dark mode toggle works, your CSS and layout are fixed.")
