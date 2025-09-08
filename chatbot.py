@@ -3,7 +3,7 @@ import openai
 from lottie_util import display_lottie
 
 def chatbot_interface():
-    openai.api_key = st.secrets["OPENAI_API_KEY"]
+    client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
     st.header("💬 FinWise Chatbot")
     display_lottie("https://assets6.lottiefiles.com/packages/lf20_vfbbn2br.json", height=110, key="chatbot")
     
@@ -16,12 +16,12 @@ def chatbot_interface():
             for speaker, text in st.session_state["chat_history"]:
                 messages.append({"role": "user" if speaker=="You" else "assistant", "content": text})
             messages.append({"role": "user", "content": user_input})
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=messages,
                 max_tokens=256
             )
-            bot_reply = response["choices"][0]["message"]["content"].strip()
+            bot_reply = response.choices[0].message.content.strip()
             st.session_state["chat_history"].append(("You", user_input))
             st.session_state["chat_history"].append(("FinWise", bot_reply))
     st.subheader("Chat History")
