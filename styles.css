@@ -1,0 +1,67 @@
+/* General Styling */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Light Mode */
+
+body.light-mode {
+    background: linear-gradient(135deg, #FDEFF9 0%, #E0F7FA 100%);
+    color: #1A1A1D;
+}
+
+body.light-mode .stButton>button {
+    background-color: #7C4DFF;
+    color: white;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+body.light-mode .stButton>button:hover {
+    background-color: #6216FF;
+}
+
+/* Dark Mode */
+
+body.dark-mode {
+    background: linear-gradient(135deg, #1f1c2c 0%, #928dab 100%);
+    color: #E0E0E0;
+}
+
+body.dark-mode .stButton>button {
+    background-color: #03DAC5;
+    color: #1A1A1D;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+body.dark-mode .stButton>button:hover {
+    background-color: #00b3a3;
+}
+
+/* Sidebar Styling */
+
+section[data-testid="stSidebar"] {
+    background: #7C4DFF;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    border-radius: 0 0 20px 20px;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #7C4DFF;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6216FF;
+}
