@@ -19,7 +19,7 @@ def landing_page():
       <div class='hero-sub'>
         Elevate your financial journey.<br>
         Modern tools. Instant advice.<br>
-        <span style='color:#f806cc;font-weight:600;'>Built for GenZ. Inspired by <a href="https://revolut.com" target="_blank" style="color:#f72585;">Revolut</a>.</span>
+        <span style='color:#f806cc;font-weight:600;'>Built for GenZ. </span>
       </div>
     </div>
     """, unsafe_allow_html=True)
