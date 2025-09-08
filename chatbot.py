@@ -1,27 +1,26 @@
 import streamlit as st
-import openai
-import utils
+from openai import OpenAI
+
+client = OpenAI(api_key=st.secrets["openai_api_key"])
 
 def chatbot_interface():
-    st.title("🤖 Finance Buddy Chatbot")
+    st.subheader("💬 Ask Finance Buddy")
 
-    openai.api_key = st.secrets["openai_api_key"]
+    with st.container():
+        st.markdown('<div class="card-container">', unsafe_allow_html=True)
 
-    if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "system", "content": "You are a helpful finance assistant for GenZ."}]
+        prompt = st.text_input("Ask anything about finance 👇")
+        if st.button("Get Answer"):
+            if prompt:
+                with st.spinner("Thinking... 💡"):
+                    try:
+                        res = client.responses.create(
+                            model="gpt-5-nano",
+                            input=prompt,
+                            store=False
+                        )
+                        st.markdown(f'<div class="card">{res.output_text}</div>', unsafe_allow_html=True)
+                    except Exception as e:
+                        st.error(f"Something went wrong: {e}")
 
-    with st.form(key="chat_form", clear_on_submit=True):
-        user_input = st.text_input("Ask me anything about finance, stocks, investment banking...")
-        submit = st.form_submit_button("Send")
-
-    if submit and user_input:
-        st.session_state.messages.append({"role": "user", "content": user_input})
-        with st.spinner("Generating response..."):
-            response = utils.get_openai_response(st.session_state.messages)
-        st.session_state.messages.append({"role": "assistant", "content": response})
-
-    for msg in st.session_state.messages:
-        if msg["role"] == "user":
-            st.markdown(f"<p style='color:#7C4DFF;'><b>You:</b> {msg['content']}</p>", unsafe_allow_html=True)
-        elif msg["role"] == "assistant":
-            st.markdown(f"<p style='color:#03DAC5;'><b>Finance Buddy:</b> {msg['content']}</p>", unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
