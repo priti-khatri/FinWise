@@ -1,0 +1,21 @@
+/* Center align all headers */
+h1, h2, h3, h4 {
+    text-align: center;
+}
+
+/* Add a Gen Z gradient */
+body {
+    background: linear-gradient(to bottom, #f5f7fa, #c3cfe2);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Sidebar customization */
+.css-1d391kg {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+/* Emojis bigger! */
+span.emoji {
+    font-size: 2rem;
+}
