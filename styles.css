@@ -1,67 +1,68 @@
-/* General Styling */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    transition: background-color 0.5s ease, color 0.5s ease;
+body, .css-18e3th9 {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9eef5 100%);
+  color: #2e2e3a;
+  transition: all 0.3s ease;
 }
 
-/* Light Mode */
-
-body.light-mode {
-    background: linear-gradient(135deg, #FDEFF9 0%, #E0F7FA 100%);
-    color: #1A1A1D;
+.dark-mode {
+  background: #1a1a2e !important;
+  color: #e0e0e0 !important;
 }
 
-body.light-mode .stButton>button {
-    background-color: #7C4DFF;
-    color: white;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
 }
 
-body.light-mode .stButton>button:hover {
-    background-color: #6216FF;
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Dark Mode */
-
-body.dark-mode {
-    background: linear-gradient(135deg, #1f1c2c 0%, #928dab 100%);
-    color: #E0E0E0;
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.1);
 }
 
-body.dark-mode .stButton>button {
-    background-color: #03DAC5;
-    color: #1A1A1D;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
+.stButton>button {
+  background-color: #556ee6;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
 }
 
-body.dark-mode .stButton>button:hover {
-    background-color: #00b3a3;
+.stButton>button:hover {
+  background-color: #3b5dc9;
+  cursor: pointer;
 }
 
-/* Sidebar Styling */
-
-section[data-testid="stSidebar"] {
-    background: #7C4DFF;
-    color: white;
-    font-weight: 600;
-    font-size: 18px;
-    border-radius: 0 0 20px 20px;
+.stSidebar {
+  background-color: rgba(255,255,255,0.9);
+  padding: 20px;
 }
 
-/* Scrollbar */
-
-::-webkit-scrollbar {
-    width: 8px;
+.nav-link {
+  font-size: 18px;
+  color: #556ee6;
+  margin: 10px 0;
+  display: block;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-::-webkit-scrollbar-thumb {
-    background: #7C4DFF;
-    border-radius: 4px;
+.nav-link:hover {
+  color: #3b5dc9;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #6216FF;
-}
