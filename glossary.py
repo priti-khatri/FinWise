@@ -1,41 +1,24 @@
 import streamlit as st
-import pandas as pd
+import openai
+import utils
+
+GLOSSARY = {
+    "Equity": "Ownership interest in a company, represented by shares of stock.",
+    "Bond": "A fixed income instrument representing a loan made by an investor to a borrower.",
+    "IPO": "Initial Public Offering, the first sale of stock by a private company to the public.",
+    "Dividend": "A portion of a company's earnings distributed to shareholders.",
+    "Liquidity": "The ease with which an asset can be converted into cash without affecting its price.",
+    "Yield": "The income return on an investment, usually expressed as a percentage.",
+}
 
 def glossary_interface():
     st.title("📖 Finance Glossary")
 
-    st.markdown("""
-        <style>
-        .dataframe {
-            border-radius: 10px;
-            overflow: hidden;
-            font-family: 'Poppins', sans-serif;
-        }
-        .stDataFrame {
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+    term = st.text_input("Search a financial term (e.g., IPO, Equity, Bond):").strip()
 
-    # Sample glossary data (you can expand this)
-    data = [
-        {"Term": "Asset", "Definition": "A resource with economic value owned by an individual or organization."},
-        {"Term": "Bond", "Definition": "A fixed income instrument that represents a loan made by an investor to a borrower."},
-        {"Term": "Credit Score", "Definition": "A number representing the creditworthiness of a person."},
-        {"Term": "ETF", "Definition": "Exchange-Traded Fund — a collection of securities traded like a stock."},
-        {"Term": "Inflation", "Definition": "The rate at which the general level of prices for goods and services rises."},
-        {"Term": "Liability", "Definition": "Something a person or company owes, usually a sum of money."},
-        {"Term": "Net Worth", "Definition": "Assets minus liabilities — a snapshot of an individual’s financial health."},
-        {"Term": "Yield", "Definition": "The earnings generated and realized on an investment over a particular period."},
-    ]
-    df = pd.DataFrame(data)
-
-    search_term = st.text_input("Search financial terms (e.g. ETF, asset, yield):").lower()
-
-    if search_term:
-        filtered_df = df[df['Term'].str.lower().str.contains(search_term)]
-    else:
-        filtered_df = df
-
-    st.dataframe(filtered_df, use_container_width=True)
+    if term:
+        definition = GLOSSARY.get(term.capitalize())
+        if definition:
+            st.markdown(f"**{term.capitalize()}**: {definition}")
+        else:
+            st.markdown("Term not found. Ask me in the Chatbot!")
