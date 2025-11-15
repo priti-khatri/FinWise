@@ -27,7 +27,7 @@ def main():
         "Scenario": scenario_interface,
     }
 
-    choice = st.sidebar.radio("Navigation", list(pages.keys()), format_func=lambda x: f"· {x}")
+    choice = st.sidebar.radio("Navigation", list(pages.keys()))
     pages[choice]()
 
     st.markdown("</div>", unsafe_allow_html=True)
