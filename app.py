@@ -15,16 +15,8 @@ def main():
     st.set_page_config(page_title="FinWise", layout="wide")
     load_css()
 
-    if "dark" not in st.session_state:
-        st.session_state.dark = False
-
     st.sidebar.title("FinWise")
-    if st.sidebar.button(" toggle mode"):
-        st.session_state.dark = not st.session_state.dark
-
-    body_class = "dark-mode" if st.session_state.dark else ""
-    st.markdown(f'<div class="{body_class}">', unsafe_allow_html=True)
-
+    
     pages = {
         "Chatbot": chatbot_interface,
         "Glossary": glossary_interface,
