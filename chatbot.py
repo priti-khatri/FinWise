@@ -65,7 +65,7 @@ def chatbot_interface():
                 st.session_state["chat_history"].append(("FinWise", bot_reply))
 
     # Chat UI
-    st.markdown("### 🗂 Chat History")
+    st.markdown("### Chat History")
     chat_container = st.container()
 
     with chat_container:
