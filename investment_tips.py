@@ -1,18 +1,35 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 from lottie_util import display_lottie
 
+
 def investment_tips_interface():
-    client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
+    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
     st.header("💡 FinWise Investment Tips")
-    display_lottie("https://assets5.lottiefiles.com/packages/lf20_2KCXQ7.json", height=110, key="tips-lottie")
+
+    display_lottie(
+        "https://assets5.lottiefiles.com/packages/lf20_2KCXQ7.json",
+        height=110,
+        key="tips-lottie"
+    )
+
     if st.button("Get Investment Tip"):
         with st.spinner("Fetching tip..."):
-            prompt = "Give me a practical investment tip for an average person, in 2-3 sentences."
-            response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[{"role": "user", "content": prompt}],
-                max_tokens=120,
+
+            prompt = (
+                "Provide a practical investment tip suitable for an average person. "
+                "Keep it simple and no longer than 2-3 sentences."
             )
-            tip = response.choices[0].message.content.strip()
-            st.success(tip)
+
+            # API call
+            completion = client.chat.completions.create(
+                model="gpt-4o-mini",      # recommended: fast + inexpensive
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=120
+            )
+
+            tip = completion.choices[0].message.content.strip()
+
+        st.success(tip)
