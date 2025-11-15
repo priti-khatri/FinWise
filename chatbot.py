@@ -5,58 +5,108 @@ from lottie_util import display_lottie
 
 def chatbot_interface():
 
-    # Initialize OpenAI client
+    #  OpenAI client
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
     st.header("💬 FinWise Chatbot")
-    display_lottie("https://assets6.lottiefiles.com/packages/lf20_vfbbn2br.json",
-                   height=110, key="chatbot")
+    display_lottie(
+        "https://assets6.lottiefiles.com/packages/lf20_vfbbn2br.json",
+        height=110,
+        key="chatbot"
+    )
 
-    # Initialize chat history
+    # chat history
     if "chat_history" not in st.session_state:
         st.session_state["chat_history"] = []
 
-    # User input box
-    user_input = st.text_input("Ask FinWise anything about finance:", key="chatbox")
-
-    # Avoid duplicate API calls on page reload
     if "last_message" not in st.session_state:
         st.session_state["last_message"] = ""
 
+    st.markdown("### Ask FinWise Anything About Finance")
+    user_input = st.text_input("Your message:", key="chatbox")
+
     # Send message
-    if st.button("Send") and user_input and user_input != st.session_state["last_message"]:
+    if st.button("Send") and user_input:
 
-        st.session_state["last_message"] = user_input  # prevent re-trigger on reruns
+        # duplicate triggering on rerun
+        if user_input != st.session_state["last_message"]:
+            st.session_state["last_message"] = user_input
 
-        with st.spinner("FinWise is thinking..."):
+            with st.spinner("FinWise is thinking..."):
 
-            # Prepare message history
-            messages = [{"role": "system",
-                         "content": "You are FinWise, a smart and friendly finance assistant. Keep answers simple, clear and practical."}]
+                # Prepare formatted message history
+                messages = [{
+                    "role": "system",
+                    "content": (
+                        "You are FinWise, a friendly and knowledgeable personal "
+                        "finance assistant. Keep answers simple and clear."
+                    )
+                }]
 
-            for speaker, text in st.session_state["chat_history"]:
-                messages.append({
-                    "role": "user" if speaker == "You" else "assistant",
-                    "content": text
-                })
+                for speaker, text in st.session_state["chat_history"]:
+                    messages.append({
+                        "role": "user" if speaker == "You" else "assistant",
+                        "content": text
+                    })
 
-            # Add new message
-            messages.append({"role": "user", "content": user_input})
+                messages.append({"role": "user", "content": user_input})
 
-            # OpenAI ChatCompletions call
-            completion = client.chat.completions.create(
-                model="gpt-4o-mini",     # Best lightweight model for finance chatbot
-                messages=messages,
-                max_tokens=300
-            )
+                # Chat Completion
+                completion = client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=messages,
+                    max_tokens=300
+                )
 
-            bot_reply = completion.choices[0].message.content.strip()
+                bot_reply = completion.choices[0].message.content.strip()
 
-            # Update conversation history
-            st.session_state["chat_history"].append(("You", user_input))
-            st.session_state["chat_history"].append(("FinWise", bot_reply))
+                # Save to history
+                st.session_state["chat_history"].append(("You", user_input))
+                st.session_state["chat_history"].append(("FinWise", bot_reply))
 
-    # Display chat history
-    st.subheader("Chat History")
-    for speaker, text in st.session_state["chat_history"]:
-        st.markdown(f"**{speaker}:** {text}")
+    # Chat UI
+    st.markdown("### 🗂 Chat History")
+    chat_container = st.container()
+
+    with chat_container:
+        for speaker, text in st.session_state["chat_history"]:
+
+            if speaker == "You":
+                st.markdown(
+                    f"""
+                    <div style="
+                        background-color:#E3F2FD;
+                        padding:10px;
+                        border-radius:8px;
+                        margin-bottom:8px;
+                        text-align:left;
+                        border-left:4px solid #2196F3;
+                    ">
+                        <b>You:</b> {text}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+            else:
+                st.markdown(
+                    f"""
+                    <div style="
+                        background-color:#F1F8E9;
+                        padding:10px;
+                        border-radius:8px;
+                        margin-bottom:8px;
+                        text-align:left;
+                        border-left:4px solid #4CAF50;
+                    ">
+                        <b>FinWise:</b> {text}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+    # Clear chat button
+    if st.button("Reset Chat"):
+        st.session_state["chat_history"] = []
+        st.session_state["last_message"] = ""
+        st.experimental_rerun()
