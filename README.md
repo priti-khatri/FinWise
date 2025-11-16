@@ -33,3 +33,5 @@ Python
 Streamlit
 OpenAI GPT Models
 Lottie Animations
+
+> Link -: https://genz-finwise.streamlit.app/
